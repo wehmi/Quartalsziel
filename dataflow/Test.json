@@ -1,0 +1,32 @@
+{
+	"name": "Test",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Output",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Filter1"
+				}
+			],
+			"script": "source(output(\n\t\tVorname as string,\n\t\tNachname as string,\n\t\tGeburtsdatum as string,\n\t\tPLZ as string,\n\t\tOrt as string,\n\t\tAdresse as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 filter(Geburtsdatum < \"03/10/1989\") ~> Filter1\nFilter1 sink(input(\n\t\tVorname as string,\n\t\tNachname as string,\n\t\tGeburtsdatum as string,\n\t\tPLZ as string,\n\t\tOrt as string,\n\t\tAdresse as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}
